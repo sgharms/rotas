@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'rotas'
+require 'debugger'
+
+Rotas::RotasApp.new.call(ARGV.first || "")
+
+# vim: set ft=ruby: 
