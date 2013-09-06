@@ -2,6 +2,8 @@ require 'yaml'
 
 module Rotas
   class RotasApp
+    attr_reader :source_file
+
     def initialize(source_file=nil)
       @source_file = source_file
     end
@@ -9,10 +11,11 @@ module Rotas
     def call(word_to_rotate)
       load_definition_file
       @lookup_table = Hash.new(NullWheelElement.new).merge(process_definition_file_into_nodes)
-
+      aggregator = []
       word_to_rotate.split('').each_slice(4) do |quartet_of_letters|
-        translate_group(quartet_of_letters)
+        aggregator << translate_group(quartet_of_letters)
       end
+      aggregator
     end
 
     private
@@ -53,7 +56,7 @@ module Rotas
       result << offsetter(@lookup_table[verb.upcase].verb)
       result << offsetter(@lookup_table[implement.upcase].implement)
       result << offsetter(@lookup_table[locus.upcase].locus)
-      puts format_line(result)
+      format_line(result)
     end
 
     def offsetter(token)
