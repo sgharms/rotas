@@ -19,7 +19,6 @@ module Rotas
 
     def load_definition_file
       source = @source_file || personal_rotas_file || factory_default_rotas_file
-      puts "using #{source}"
       @yaml_tree = YAML.load_file(source)
     rescue => e
       puts "Rotas could not load a data file: #{e.message}"
@@ -58,7 +57,8 @@ module Rotas
     end
 
     def offsetter(token)
-      sprintf "[%s]", token
+      return "" if token == ""
+      sprintf("[%s]", token)
     end
 
     def format_line(four_tokens)
