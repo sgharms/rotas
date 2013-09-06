@@ -1,15 +1,20 @@
 require 'yaml'
+require 'forwardable'
 
 module Rotas
   class RotasApp
-    attr_reader :source_file
+    extend ::Forwardable
+    def_delegator :@file_loader, :config_yaml, :config
 
-    def initialize(source_file=nil)
+    attr_reader :source_file, :options
+
+    def initialize(source_file=nil, opts={})
+      @options = opts
       @source_file = source_file
+      @file_loader = RotasDefaultFileLoader.new(self) || opts[:file_loader].new(self)
     end
 
     def call(word_to_rotate)
-      load_definition_file
       @lookup_table = Hash.new(NullWheelElement.new).merge(process_definition_file_into_nodes)
       aggregator = []
       word_to_rotate.split('').each_slice(4) do |quartet_of_letters|
@@ -20,26 +25,8 @@ module Rotas
 
     private
 
-    def load_definition_file
-      source = @source_file || personal_rotas_file || factory_default_rotas_file
-      @yaml_tree = YAML.load_file(source)
-    rescue => e
-      puts "Rotas could not load a data file: #{e.message}"
-    end
-
-    def factory_default_rotas_file
-      default_config_file_path = File.join(File.dirname(__FILE__), '..', '..',  *%w/data rotas.yml/)
-      return default_config_file_path if File.exists?(default_config_file_path)
-    end
-
-    def personal_rotas_file
-      personal_rotas_file = File.join(ENV['HOME'], ".rotas.yml")
-      return personal_rotas_file if File.exists?(personal_rotas_file)
-      false
-    end
-
     def process_definition_file_into_nodes
-      @yaml_tree.inject({}) do |memo, yaml_node|
+      config.inject({}) do |memo, yaml_node|
         elem = WheelElement.new(yaml_node)
         memo[elem.letter] = elem
         memo
