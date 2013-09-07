@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'rotas'
 
-Rotas::RotasApp.new.call(ARGV.first || "")
+puts Rotas::RotasApp.new.call(ARGV.first || "")
 
 # vim: set ft=ruby: 
