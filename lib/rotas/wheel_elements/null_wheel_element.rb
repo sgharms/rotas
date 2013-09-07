@@ -1,4 +1,4 @@
-require 'rotas/wheel_element'
+require 'rotas/wheel_elements/wheel_element'
 
 class NullWheelElement < WheelElement
   def initialize()

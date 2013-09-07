@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'rotas/null_offsetter'
+require 'rotas/offset_strategies/null_offset_strategy'
 require 'ostruct'
 
 

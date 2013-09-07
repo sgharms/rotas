@@ -1,6 +1,6 @@
 require 'forwardable'
-require 'rotas/null_wheel_element'
-require 'rotas/wheel_element'
+require 'rotas/wheel_elements/null_wheel_element'
+require 'rotas/wheel_elements/wheel_element'
 
 class RotasDefaultLookupTable
   extend ::Forwardable
