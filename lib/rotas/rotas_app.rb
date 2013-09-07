@@ -8,12 +8,12 @@ module Rotas
 
     attr_reader :source_file, :options
 
-    def initialize(source_file=nil, opts={})
+    def initialize(opts={ translator: nil, file_loader: nil})
       @options = opts
-      @source_file = source_file
-      @file_loader = (opts[:file_loader_class] || RotasDefaultFileLoader).new(self)
-      @translator = opts[:translator] || build_default_translator
+      @file_loader = opts[:file_loader]
+      @translator = opts[:translator]
       @sectioner = (opts[:sectioner_class] || RotasDefaultLetterCelDivider).new
+      check_params!
     end
 
     def call(word_to_rotate)
@@ -24,10 +24,16 @@ module Rotas
 
     private
 
-    def build_default_translator
-      lookup_table = RotasDefaultLookupTable.new(@file_loader.config_yaml)
-      offset_strategy = RotasDefaultOffsetStrategy.new
-      RotasDefaultTranslator.new(lookup_table, offset_strategy)
+    def check_params!
+      required_conditions = @options[:translator] && @options[:file_loader]
+      return if required_conditions
+      raise <<-EOERROR
+
+  1.  RotasApp must be provided a :file_loader and an :translator option
+
+  2.  The :file_loader object must respond to `config_yaml` which returns
+      a loaded rotas configuration file.
+      EOERROR
     end
   end
 end

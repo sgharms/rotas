@@ -23,5 +23,7 @@ class DefaultFileLoaderTest < Minitest::Unit::TestCase
     loader = RotasDefaultFileLoader.new(stub_app)
     refute_equal loader.config_yaml_source, 'mock', "File path should be injectable"
     assert_match(/yml$/, loader.config_yaml_source, "Default file path should end in YML")
+    assert_equal "Locus for Z", loader.config_yaml.last["locus"], "When forced to use default config, last record's locus should be 'Locus for Z'"
   end
+
 end

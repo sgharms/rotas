@@ -1,7 +1,7 @@
 class RotasDefaultFileLoader
   attr_reader :config_yaml_source
 
-  def initialize(app)
+  def initialize(app=OpenStruct.new({ options: Hash.new(nil), source_file: nil}))
     @options = app.options
     @selected_source_file = app.source_file
     @config_yaml_source = identify_yaml_definition_file

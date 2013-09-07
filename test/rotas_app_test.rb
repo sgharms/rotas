@@ -3,24 +3,14 @@ require 'minitest/pride'
 require 'rotas'
 
 class RotasAppTest < Minitest::Unit::TestCase
-
-  def test_alternate_definition_file_can_be_injected
-    file =  File.join(File.dirname(__FILE__), 'data', 'test_rotas.yml')
-    app = Rotas::RotasApp.new(file)
-    assert_equal file, app.source_file, "Data file should be the test data file."
-    assert_equal test_file_result, app.call("test").first, "Running rotas on 'test' should be a simple sentence with filler values"
-  end
-
-  def test_app_uses_default_definition_file_by_default_prohibit_user_config
-    app = Rotas::RotasApp.new(nil, disallow_user_config: true)
-    assert app.config, "App should be able to share a non-empty config by default"
-    assert_equal "Locus for Z", app.config.last["locus"], "When forced to use default config, last record's locus should be 'Locus for Z'"
-  end
-
   def test_lines_with_non_translatable_characters
     file =  File.join(File.dirname(__FILE__), 'data', 'test_rotas.yml')
-    app = Rotas::RotasApp.new(file)
-    assert_equal file, app.source_file, "Data file should be the test data file."
+    conf = OpenStruct.new({source_file: file, options: {disallow_user_config: true}})
+    rotas_config_file_loader = RotasDefaultFileLoader.new(conf)
+    lookup_table = RotasDefaultLookupTable.new(rotas_config_file_loader.config_yaml)
+    offset_strategy = RotasDefaultOffsetStrategy.new
+    rotas_translator = RotasDefaultTranslator.new(lookup_table, offset_strategy)
+    app = Rotas::RotasApp.new(file_loader: rotas_config_file_loader, translator: rotas_translator)
     assert_equal test_file_result2, app.call("me / myself").first, "Running rotas on 'me / myself' should be a simple sentence with filler values"
   end
 

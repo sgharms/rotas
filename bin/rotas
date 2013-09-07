@@ -1,6 +1,15 @@
 #!/usr/bin/env ruby
 require 'rotas'
+require 'ostruct'
 
-puts Rotas::RotasApp.new.call(ARGV.first || "")
+rotas_config_file_loader = RotasDefaultFileLoader.new()
+lookup_table = RotasDefaultLookupTable.new(rotas_config_file_loader.config_yaml)
+offset_strategy = RotasDefaultOffsetStrategy.new
+rotas_translator = RotasDefaultTranslator.new(lookup_table, offset_strategy)
 
-# vim: set ft=ruby: 
+puts Rotas::RotasApp.new(
+  file_loader: rotas_config_file_loader,
+  translator: rotas_translator
+).call(ARGV.first || "")
+
+# vim: set ft=ruby:
