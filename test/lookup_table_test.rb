@@ -16,8 +16,7 @@ class LookuptableTest < Minitest::Unit::TestCase
         locus: "Locus for W"
     EOYAML
     deserialized_yaml_sample = YAML.load(yaml_sample)
-    stub_app = OpenStruct.new({ config: deserialized_yaml_sample })
-    table = RotasDefaultLookupTable.new(stub_app)
+    table = RotasDefaultLookupTable.new(deserialized_yaml_sample)
     assert table.respond_to?(:[]), "Should delegate to the internal struct"
     assert_match(/Locus/, table['W'].locus, "Should delegate to stubbed YAML data")
   end

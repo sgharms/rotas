@@ -6,15 +6,15 @@ class RotasDefaultLookupTable
   extend ::Forwardable
   def_delegators :@struct, :[]
 
-  def initialize(app)
-    @config = app.config
+  def initialize(yaml)
+    @rotas_definition_as_yaml = yaml
     @struct = Hash.new(NullWheelElement.new).merge(process_definition_file_into_nodes)
   end
 
   private
 
   def process_definition_file_into_nodes
-    @config.inject({}) do |memo, yaml_node|
+    @rotas_definition_as_yaml.inject({}) do |memo, yaml_node|
       elem = WheelElement.new(yaml_node)
       memo[elem.letter] = elem
       memo

@@ -14,7 +14,7 @@ module Rotas
       @options = opts
       @source_file = source_file
       @file_loader = RotasDefaultFileLoader.new(self) || opts[:file_loader].new(self)
-      lookup_table = RotasDefaultLookupTable.new(self) || opts[:lookup_table].new(self)
+      lookup_table = RotasDefaultLookupTable.new(@file_loader.config_yaml) || opts[:lookup_table].new(@file_loader.config_yaml)
       offset_strategy = RotasDefaultOffsetStrategy.new || opts[:offset_strategy].new
       translator_class = RotasDefaultTranslator || opts[:translator_class]
       @translator = translator_class.new(lookup_table, offset_strategy)
