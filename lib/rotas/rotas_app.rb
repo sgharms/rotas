@@ -3,8 +3,6 @@ require 'forwardable'
 
 module Rotas
   class RotasApp
-    SECTION_BY = 4
-
     extend ::Forwardable
     def_delegator :@file_loader, :config_yaml, :config
 

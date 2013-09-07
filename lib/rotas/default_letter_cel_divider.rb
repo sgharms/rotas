@@ -1,7 +1,5 @@
 class RotasDefaultLetterCelDivider
-  def initialize(group_by)
-    @group_by = group_by
-  end
+  GROUP_BY = 4
 
   def call(rotatable_line)
     outer_accumulator = []
@@ -15,7 +13,7 @@ class RotasDefaultLetterCelDivider
 
       inner_accumulator << token
 
-      if tokens_counter == @group_by
+      if tokens_counter == GROUP_BY
         tokens_counter = 0
         outer_accumulator << inner_accumulator
         inner_accumulator = []
