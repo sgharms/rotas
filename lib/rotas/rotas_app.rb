@@ -12,10 +12,12 @@ module Rotas
       @options = opts
       @source_file = source_file
       @file_loader = RotasDefaultFileLoader.new(self) || opts[:file_loader].new(self)
+      @lookup_table = RotasDefaultLookupTable.new(self) || opts[:lookup_table].new(self)
+      @translator = RotasDefaultTranslator.new
+      @offset_strategy = RotasDefaultOffsetStrategy.new
     end
 
     def call(word_to_rotate)
-      @lookup_table = Hash.new(NullWheelElement.new).merge(process_definition_file_into_nodes)
       aggregator = []
       word_to_rotate.split('').each_slice(4) do |quartet_of_letters|
         aggregator << translate_group(quartet_of_letters)
@@ -24,14 +26,6 @@ module Rotas
     end
 
     private
-
-    def process_definition_file_into_nodes
-      config.inject({}) do |memo, yaml_node|
-        elem = WheelElement.new(yaml_node)
-        memo[elem.letter] = elem
-        memo
-      end
-    end
 
     def translate_group(quartet_of_letters)
       while quartet_of_letters.length < 4 do
