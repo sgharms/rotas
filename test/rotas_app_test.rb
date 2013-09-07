@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'rotas'
 
-class BasicTest < Minitest::Unit::TestCase
+class RotasAppTest < Minitest::Unit::TestCase
 
   def test_alternate_definition_file_can_be_injected
     file =  File.join(File.dirname(__FILE__), 'data', 'test_rotas.yml')
