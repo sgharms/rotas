@@ -1,20 +1,39 @@
 class RotasDefaultOffsetStrategy
+  PREFIX_CONTENT = [ '', '', 'with ', 'in/on ' ]
+
   def call(x)
-    return sprintf "[%s]", x
+    return sprintf "[%s] ", x
   end
 
-  def format_line(four_tokens)
+  def format_line(tokens)
     line = ""
-    line += four_tokens[0] if four_tokens[0] != ""
-    line += " " if four_tokens[1] != ""
-    line += four_tokens[1] if four_tokens[1] != ""
-    line += " with #{a_or_an(four_tokens[2])} #{four_tokens[2]}" if four_tokens[2] != ""
-    line += " in #{a_or_an(four_tokens[3])} #{four_tokens[3]}" if four_tokens[3] != ""
-    line += "." if four_tokens[3] != ""
-    line
+    token_index = 0
+
+    while !tokens.empty? do
+      if tokens.first !~ /[A-Za-z]/
+        line += tokens.shift
+      else
+        line += PREFIX_CONTENT[token_index]
+
+        token = tokens.shift
+        if token_index >= 2
+          line += "#{a_or_an(token)} "
+        else
+          line += "#{token}"
+        end
+        token_index += 1
+      end
+    end
+
+    line = line.gsub(/(\s)+/, '\1').gsub(/\s+\Z/, '')
+    line += '.'
   end
 
   def a_or_an(word)
-    %w/a e i o u/.include?(word[0].downcase) ? 'an' : 'a'
+    word = word.to_s
+    %w/a e i o u/.include?(word[0].downcase) ? "an #{word}" : "a #{word}"
+    rescue
+      STDERR.puts "Failed to process [#{word}]"
+      raise
   end
 end
