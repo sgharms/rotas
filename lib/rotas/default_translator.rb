@@ -17,5 +17,4 @@ class RotasDefaultTranslator
     @offsetter.format_line(result)
   end
 
-  
 end

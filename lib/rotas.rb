@@ -6,6 +6,7 @@ require "rotas/default_file_loader"
 require "rotas/default_lookup_table"
 require "rotas/default_translator"
 require "rotas/default_offset_strategy"
+require "rotas/null_offsetter"
 
 
 module Rotas

@@ -1,8 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'rotas'
-require 'debugger'
-
 
 class BasicTest < Minitest::Unit::TestCase
 

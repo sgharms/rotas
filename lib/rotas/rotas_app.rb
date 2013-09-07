@@ -12,8 +12,10 @@ module Rotas
       @options = opts
       @source_file = source_file
       @file_loader = RotasDefaultFileLoader.new(self) || opts[:file_loader].new(self)
-      @lookup_table = RotasDefaultLookupTable.new(self) || opts[:lookup_table].new(self)
-      @translator = RotasDefaultTranslator.new(@lookup_table, RotasDefaultOffsetStrategy.new)
+      lookup_table = RotasDefaultLookupTable.new(self) || opts[:lookup_table].new(self)
+      offset_strategy = RotasDefaultOffsetStrategy.new || opts[:offset_strategy].new
+      translator_class = RotasDefaultTranslator || opts[:translator_class]
+      @translator = translator_class.new(lookup_table, offset_strategy)
     end
 
     def call(word_to_rotate)
