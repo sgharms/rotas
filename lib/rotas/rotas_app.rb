@@ -3,6 +3,8 @@ require 'forwardable'
 
 module Rotas
   class RotasApp
+    SECTION_BY = 4
+
     extend ::Forwardable
     def_delegator :@file_loader, :config_yaml, :config
 
@@ -16,14 +18,13 @@ module Rotas
       offset_strategy = RotasDefaultOffsetStrategy.new || opts[:offset_strategy].new
       translator_class = RotasDefaultTranslator || opts[:translator_class]
       @translator = translator_class.new(lookup_table, offset_strategy)
+      @sectioner = RotasDefaultLetterCelDivider.new(SECTION_BY)
     end
 
     def call(word_to_rotate)
-      aggregator = []
-      word_to_rotate.split('').each_slice(4) do |quartet_of_letters|
-        aggregator << @translator.translate(quartet_of_letters)
+      @sectioner.call(word_to_rotate).map do |quartet_of_letters|
+        @translator.translate(quartet_of_letters)
       end
-      aggregator
     end
   end
 end
