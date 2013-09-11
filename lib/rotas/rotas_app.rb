@@ -8,7 +8,7 @@ module Rotas
 
     attr_reader :source_file, :options
 
-    def initialize(opts={ translator: nil, file_loader: nil})
+    def initialize(opts={translator: nil, file_loader: nil})
       @options = opts
       @file_loader = opts[:file_loader]
       @translator = opts[:translator]
