@@ -10,5 +10,4 @@ require "rotas/offset_strategies/null_offset_strategy"
 require "rotas/default_letter_cel_divider"
 
 module Rotas
-  # Your code goes here...
 end
