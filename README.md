@@ -23,13 +23,11 @@ very little difficulty.
 The French word "fleur" corresponds to "flower" in English.  To memorize
 this association, `rotas` helps you generate this short story.
 
-$ rotas fleur
-\[Frank Sinatra\] \[snorts cocaine\] with a \[golf club\] in a \[tokyo!!!\].
-\[Regina Spektor\] \[\] with a \[\] in a \[\].
+    ➜  rotas git:(master) ✗ rotas "fleur/flower"
+    [Frank Sinatra] [snorts cocaine] with a [golf club] in/on a [tokyo!!!].
+    [Regina Spektor] /[shoots heroin] with a [straw] in/on a [garbage can].
+    [Winston Churchill] [plays golf] with a [drumstick].
 
-$ rotas flower
-\[Frank Sinatra\] \[snorts cocaine\] with a \[megaphone\] in a \[westminster\].
-\[Edward Norton\] \[plays drums on a chair\] with a \[\] in a \[\].
 
 From these genearted stories I would remember "Ol Blue eyes is doing
 coke and raging with a golden golf club in a Tokyo bar, scaring the crap
@@ -72,8 +70,7 @@ Or install it yourself as:
 ## Usage
 
     $ rotas ruby
-    [Regina Spektor] [battles a kaiju] with a [opium pipe] in a [iron
-islands boat].
+    [Regina Spektor] [battles a kaiju] with a [opium pipe] in a [iron islands boat].
 
 ## Contributing
 
